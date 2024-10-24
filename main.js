@@ -12,6 +12,12 @@ function custom_middleware(req, res, next) {
 
 // Use the middleware function for all routes
 app.use(custom_middleware);
+// middleware for urlencoded data (form data)
+app.use(
+  express.urlencoded({
+    extended: true, // allows to parse nested objects
+  })
+);
 
 // What is an RESTful API?
 // RESTful stand for Representational State Transfer.
@@ -28,7 +34,7 @@ app.use(custom_middleware);
 // HTTP Status codes
 // These are codes used to represent the status of the request/response.
 // 200 - Successful
-// 201 - Created
+// 201 - Created: successful creation of a resource
 // 404 - Not Found
 // 400 - Bad Request: invalid or malformed request
 // 500 - Internal Server Error
@@ -62,6 +68,21 @@ app.get("/users/:id", (req, res) => {
   }
   // send the user back to the client
   res.send(user, 200);
+});
+
+// Post method is used to create a new user
+app.post("/users", function (req, res) {
+  // get data from request body
+  let user = {
+    id: users.length + 1,
+    name: req.body.name,
+    age: req.body.age,
+  };
+
+  //  add the user to the users array/database
+  users.push(user);
+  // send the user back to the client
+  res.send(user, 201);
 });
 
 app.listen(3000, () => {
