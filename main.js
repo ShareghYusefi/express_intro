@@ -13,13 +13,56 @@ function custom_middleware(req, res, next) {
 // Use the middleware function for all routes
 app.use(custom_middleware);
 
+// What is an RESTful API?
+// RESTful stand for Representational State Transfer.
+// API stands for Application Programming Interface.
+// A way to design your URL's to make it easy to interact with your server.
+
+// API's use HTTP methods to interact with the server.
+// GET method is used to get data from the server.
+// POST method is used to send data to the server.
+// PATCH method is used to update data on the server.
+// PUT method is used to ovverite data objects on a server.
+// DELETE method is used to delete data from the server.
+
+// HTTP Status codes
+// These are codes used to represent the status of the request/response.
+// 200 - Successful
+// 201 - Created
+// 404 - Not Found
+// 400 - Bad Request: invalid or malformed request
+// 500 - Internal Server Error
+
+const users = [
+  { id: 1, name: "John", age: 30 },
+  { id: 2, name: "Jane", age: 25 },
+  { id: 3, name: "Doe", age: 35 },
+];
+
+// Get method is used to get all users from a database
 app.get(
-  "/",
+  "/users",
   // this is a middleware function for the / route
   function (req, res) {
-    res.send("Hello World");
+    // get all users from a database
+    res.send(users, 200);
   }
 );
+
+// Get method is used to get a specific user from a database
+app.get("/users/:id", (req, res) => {
+  // params is an object that contains the route parameters
+  let id = parseInt(req.params.id); // convert the id to an integer
+  // find the user with the id
+  let user = users.find((user) => user.id === id);
+  // if the user is not found
+  if (!user) {
+    // send a 404 status code
+    res.send("User not found", 404);
+  }
+  // send the user back to the client
+  res.send(user, 200);
+});
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
