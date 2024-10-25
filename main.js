@@ -104,6 +104,47 @@ app.patch("/users/:id", (req, res) => {
   res.send(user, 200);
 });
 
+// Put method is used to overwrite a user
+app.put("/users/:id", (req, res) => {
+  // params is an object that contains the route parameters
+  let id = parseInt(req.params.id); // convert the id to an integer
+  // find the user with the id
+  let user = users.find((user) => user.id === id);
+  // if the user is not found
+  if (!user) {
+    // send a 404 status code
+    res.send("User not found", 404);
+  }
+
+  // overwrite the user
+  user.id = id;
+  user.name = req.body.name;
+  user.age = req.body.age;
+
+  // send the user back to the client
+  res.send(user, 200);
+});
+
+// Delete method is used to delete a user
+app.delete("/users/:id", (req, res) => {
+  // params is an object that contains the route parameters
+  let id = parseInt(req.params.id); // convert the id to an integer
+  // find the user with the id
+  let user = users.find((user) => user.id === id);
+  // if the user is not found
+  if (!user) {
+    // send a 404 status code
+    res.send("User not found", 404);
+  }
+  // find the index of the user for removal of entry
+  let index = users.indexOf(user);
+  // remove the user form the users array
+  users.splice(index, 1);
+
+  // send the user back to the client
+  res.send(user, 200);
+});
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
