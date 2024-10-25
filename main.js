@@ -2,7 +2,11 @@
 // Express is used to create a web server in Node. Express works on middleware concept (callback functions).
 
 const express = require("express");
-const app = express();
+var cors = require("cors");
+var app = express();
+
+// cors is a middleware that allows us to make requests from different origins/domains
+app.use(cors());
 
 function custom_middleware(req, res, next) {
   console.log("Middleware function called");
@@ -51,7 +55,7 @@ app.get(
   // this is a middleware function for the / route
   function (req, res) {
     // get all users from a database
-    res.send(users, 200);
+    res.status(200).send(users);
   }
 );
 
@@ -67,7 +71,7 @@ app.get("/users/:id", (req, res) => {
     res.send("User not found", 404);
   }
   // send the user back to the client
-  res.send(user, 200);
+  res.status(200).send(user);
 });
 
 // Post method is used to create a new user
@@ -82,7 +86,7 @@ app.post("/users", function (req, res) {
   //  add the user to the users array/database
   users.push(user);
   // send the user back to the client
-  res.send(user, 201);
+  res.status(201).send(user);
 });
 
 // Patch method is used to update a user
@@ -101,7 +105,7 @@ app.patch("/users/:id", (req, res) => {
   user.age = req.body.age;
 
   // send the user back to the client
-  res.send(user, 200);
+  res.status(200).send(user);
 });
 
 // Put method is used to overwrite a user
@@ -122,7 +126,7 @@ app.put("/users/:id", (req, res) => {
   user.age = req.body.age;
 
   // send the user back to the client
-  res.send(user, 200);
+  res.status(200).send(user);
 });
 
 // Delete method is used to delete a user
@@ -142,7 +146,7 @@ app.delete("/users/:id", (req, res) => {
   users.splice(index, 1);
 
   // send the user back to the client
-  res.send(user, 200);
+  res.status(200).send(user);
 });
 
 app.listen(3000, () => {
