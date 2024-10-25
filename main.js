@@ -85,6 +85,25 @@ app.post("/users", function (req, res) {
   res.send(user, 201);
 });
 
+// Patch method is used to update a user
+app.patch("/users/:id", (req, res) => {
+  // params is an object that contains the route parameters
+  let id = parseInt(req.params.id); // convert the id to an integer
+  // find the user with the id
+  let user = users.find((user) => user.id === id);
+  // if the user is not found
+  if (!user) {
+    // send a 404 status code
+    res.send("User not found", 404);
+  }
+  // update the user
+  user.name = req.body.name;
+  user.age = req.body.age;
+
+  // send the user back to the client
+  res.send(user, 200);
+});
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
